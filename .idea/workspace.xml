@@ -11,39 +11,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7708076-df27-4353-affa-320225e824c6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/MatchDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/PlayerDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dto/ActiveMatch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dto/MatchDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dto/PlayerDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entity/MatchEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entity/PlayerEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/FinishedMatchesPersistenceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/MatchScoreCalculationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/MatchesService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/OngoingMatchesService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/PlayerService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/servlets/MatchScoreController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/servlets/matches.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/servlets/newMatch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/HibernateUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/JspPathHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/sql.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/activeMatch.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/matchesPage.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/newMatchPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/commons/validation/Error.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/commons/validation/ValidationResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/commons/validation/Validator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/exceptions/RespException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/match/MatchDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/match/newMatch/NewMatchDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/match/newMatch/NewMatchDtoValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/match/newMatch/newMatchController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/player/PlayerDtoValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/MatchDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/MatchDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/PlayerDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/player/PlayerDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dto/ActiveMatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/activeMatch/ActiveMatchDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dto/MatchDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dto/PlayerDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/player/PlayerDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/MatchEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/MatchEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/PlayerEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/player/PlayerEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/FinishedMatchesPersistenceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/activeMatch/FinishedMatchesPersistenceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/MatchScoreCalculationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/activeMatch/MatchScoreCalculationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/MatchesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/matches/MatchesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/OngoingMatchesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/activeMatch/OngoingMatchesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/PlayerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/player/PlayerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/servlets/MatchScoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/activeMatch/MatchScoreController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/servlets/matches.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/match/matches/matchesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/servlets/newMatch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sql.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/matchesPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/matchesPage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/newMatchPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/newMatchPage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +58,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -134,7 +132,7 @@
       <module name="TennisScoreboard" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="dao.*" />
+          <option name="PATTERN" value="player.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -288,6 +286,8 @@
       <workItem from="1728213982590" duration="27228000" />
       <workItem from="1728477197223" duration="10665000" />
       <workItem from="1728552580570" duration="11490000" />
+      <workItem from="1729844299156" duration="72000" />
+      <workItem from="1729844387109" duration="45000" />
     </task>
     <servers />
   </component>

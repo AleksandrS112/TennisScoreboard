@@ -1,9 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
   <head>
     <title>Новый матч</title>
   </head>
   <body>
+    <c:if test="${!requestScope.validationResult.isValid()}">
+      <c:forEach items="${requestScope.validationResult.errors}" var="error">
+          <a>${error.code} ${error.message}</a><br>
+      </c:forEach>
+    </c:if>
+
     <form action="${pageContext.request.contextPath}/new-match"
           method="post"
           enctype="application/x-www-form-urlencoded">
