@@ -26,4 +26,24 @@ public enum Points {
         throw new IllegalArgumentException("Нет такого значения Point: " + soughtAfterValue);
     }
 
+    public Points next() {
+        int ordinal = this.ordinal();
+        if (ordinal + 1 >= values().length) {
+            throw new IndexOutOfBoundsException("Отсутствует следующее значение Point.");
+        }
+        return values()[ordinal + 1];
+    }
+
+    public Points previous() {
+        int ordinal = this.ordinal();
+        if (ordinal - 1 < 0) {
+            throw new IndexOutOfBoundsException("Отсутствует предыдущее значение Point.");
+        }
+        return values()[ordinal - 1];
+    }
+
+    public static Points resetPoints() {
+        return values()[0];
+    }
+
 }
