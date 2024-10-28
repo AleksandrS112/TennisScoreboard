@@ -4,114 +4,76 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MatchScoreCalculationService {
+public class
+
+MatchScoreCalculationService {
+
+    private static final int MINIMUM_REQUIRED_POINTS = 7;
+    private static final int MINIMUM_POINT_DIFFERENCE_REQUIRED = 2;
+    private static final int SIX_POINTS = 6;
+    private static final int GAMES_FOR_WINING_THE_SET = 7;
+
     private static final MatchScoreCalculationService INSTANCE = new MatchScoreCalculationService();
+
     public static MatchScoreCalculationService getInstance() {
         return INSTANCE;
     }
 
-    public void addPoint(ActiveMatchDto activeMatch, int winnerPointId) {
-        boolean tieBreak = activeMatch.getPlayer1Game() == 6 && activeMatch.getPlayer2Game() == 6 ;
-        if(activeMatch.getPlayer1Id() == winnerPointId) {
+    public void addPoint(ActiveMatch activeMatch, PlayerNumber winnerPlayerNumber) {
+        PlayerScore winnerScore = winnerPlayerNumber == PlayerNumber.ONE ?
+                activeMatch.getPlayer1Score() : activeMatch.getPlayer2Score();
+        PlayerScore loseScore = winnerPlayerNumber == PlayerNumber.ONE ?
+                activeMatch.getPlayer2Score() : activeMatch.getPlayer1Score();
+
+        boolean tieBreak = (winnerScore.getGame() == SIX_POINTS) && (loseScore.getGame() == SIX_POINTS) ;
             if (!tieBreak) {
-                switch (activeMatch.getPlayer1Points()) {
+                //Points winnerPoints = Points.getByValue(winnerScore.getPoints());
+                switch (winnerScore.getPoints()) {
                     case ("0"):
-                        activeMatch.setPlayer1Points("15");
+                        winnerScore.setPoints("15");
                         break;
                     case ("15"):
-                        activeMatch.setPlayer1Points("30");
+                        winnerScore.setPoints("30");
                         break;
                     case ("30"):
-                        if (activeMatch.getPlayer2Points().equals("40")) {
-                            activeMatch.setPlayer1Points("");
-                            activeMatch.setPlayer2Points("");
-                        } else {
-                            activeMatch.setPlayer1Points("40");
-                        }
+                        winnerScore.setPoints("40");
                         break;
-                    case ("40"), ("AB"):
-                        if (activeMatch.getPlayer1Game()+1 == 7 && activeMatch.getPlayer1Game()+1-activeMatch.getPlayer2Game() >= 2) {
-                            activeMatch.setPlayer1Set(activeMatch.getPlayer1Set()+1);
-                            activeMatch.setPlayer1Game(0);
-                            activeMatch.setPlayer2Game(0);
-                        } else {
-                            activeMatch.setPlayer1Game(activeMatch.getPlayer1Game()+1);
-                        }
-                        activeMatch.setPlayer1Points("0");
-                        activeMatch.setPlayer2Points("0");
+                    case ("40"):
+                        if (loseScore.getPoints().equals("40")) {
+                            winnerScore.setPoints("AB");
+                        } else if (loseScore.getPoints().equals("AB")) {
+                            loseScore.setPoints("40");
+                        } else
+                            addGame(winnerScore, loseScore);
                         break;
-                    case (""):
-                        if (activeMatch.getPlayer2Points().equals("")) {
-                            activeMatch.setPlayer1Points("AB");
-                        } else if (activeMatch.getPlayer2Points().equals("AB")) {
-                            activeMatch.setPlayer1Points("");
-                            activeMatch.setPlayer2Points("");
-                        }
+                    case ("AB"):
+                        addGame(winnerScore, loseScore);
                         break;
                 }
             } else if (tieBreak) {
-                int player1Points = Integer.parseInt(activeMatch.getPlayer1Points());
-                int player2Points = Integer.parseInt(activeMatch.getPlayer2Points());
-                if((player1Points+1 >= 7) && (((player1Points+1)-player2Points) >= 2)) {
-                    activeMatch.setPlayer1Set(activeMatch.getPlayer1Set()+1);
-                    activeMatch.setPlayer1Game(0);
-                    activeMatch.setPlayer2Game(0);
-                    activeMatch.setPlayer1Points("0");
-                    activeMatch.setPlayer2Points("0");
-                } else {
-                    activeMatch.setPlayer1Points(String.valueOf(player1Points+1));
+                int winnerPoints = Integer.parseInt(winnerScore.getPoints()) + 1;
+                winnerScore.setPoints(String.valueOf(winnerPoints));
+                int losePoints = Integer.parseInt(loseScore.getPoints());
+                boolean requiredPointDifference = winnerPoints - losePoints >= MINIMUM_POINT_DIFFERENCE_REQUIRED;
+                boolean gameWinCondition = (winnerPoints >= MINIMUM_REQUIRED_POINTS) && requiredPointDifference;
+                if(gameWinCondition) {
+                    addGame(winnerScore, loseScore);
                 }
             }
-        } else if(activeMatch.getPlayer2Id() == winnerPointId) {
-            if (!tieBreak) {
-                switch (activeMatch.getPlayer2Points()) {
-                    case ("0"):
-                        activeMatch.setPlayer2Points("15");
-                        break;
-                    case ("15"):
-                        activeMatch.setPlayer2Points("30");
-                        break;
-                    case ("30"):
-                        if (activeMatch.getPlayer1Points().equals("40")) {
-                            activeMatch.setPlayer2Points("");
-                            activeMatch.setPlayer1Points("");
-                        } else {
-                            activeMatch.setPlayer2Points("40");
-                        }
-                        break;
-                    case ("40"), ("AB"):
-                        if (activeMatch.getPlayer2Game()+1 == 7 && activeMatch.getPlayer2Game()+1-activeMatch.getPlayer1Game() >= 2) {
-                            activeMatch.setPlayer2Set(activeMatch.getPlayer2Set()+1);
-                            activeMatch.setPlayer2Game(0);
-                            activeMatch.setPlayer1Game(0);
-                        } else {
-                            activeMatch.setPlayer2Game(activeMatch.getPlayer2Game()+1);
-                        }
-                        activeMatch.setPlayer2Points("0");
-                        activeMatch.setPlayer1Points("0");
-                        break;
-                    case (""):
-                        if (activeMatch.getPlayer1Points().equals("")) {
-                            activeMatch.setPlayer2Points("AB");
-                        } else if (activeMatch.getPlayer1Points().equals("AB")) {
-                            activeMatch.setPlayer2Points("");
-                            activeMatch.setPlayer1Points("");
-                        }
-                        break;
-                }
-            } else if (tieBreak) {
-                int player1Points = Integer.parseInt(activeMatch.getPlayer1Points());
-                int player2Points = Integer.parseInt(activeMatch.getPlayer2Points());
-                if((player2Points+1 >= 7) && (((player2Points+1)-player1Points) >= 2)) {
-                    activeMatch.setPlayer2Set(activeMatch.getPlayer2Set()+1);
-                    activeMatch.setPlayer2Game(0);
-                    activeMatch.setPlayer1Game(0);
-                    activeMatch.setPlayer2Points("0");
-                    activeMatch.setPlayer1Points("0");
-                } else {
-                    activeMatch.setPlayer2Points(String.valueOf(player2Points+1));
-                }
-            }
-        }
     }
+
+    private void addGame(PlayerScore winnerScore, PlayerScore loseScore) {
+        winnerScore.setGame(winnerScore.getGame() + 1);
+        if (winnerScore.getGame() == GAMES_FOR_WINING_THE_SET)
+            addSet(winnerScore, loseScore);
+        winnerScore.setPoints("0");
+        loseScore.setPoints("0");
+    }
+
+    private void addSet(PlayerScore winnerPointScore, PlayerScore losePointScore) {
+        winnerPointScore.setSet(winnerPointScore.getSet() + 1);
+        winnerPointScore.setGame(0);
+        losePointScore.setGame(0);
+    }
+
 }

@@ -13,18 +13,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OngoingMatchesService {
 
     private static final OngoingMatchesService INSTANCE = new OngoingMatchesService();
-    private final Map<UUID, ActiveMatchDto> activeMatches = new ConcurrentHashMap<>();
+    private final Map<UUID, ActiveMatch> activeMatches = new ConcurrentHashMap<>();
 
     public static OngoingMatchesService getInstance() {
         return INSTANCE;
     }
 
-    public Optional<ActiveMatchDto> getActiveMatch(UUID uuid) {
+    public Optional<ActiveMatch> getActiveMatch(UUID uuid) {
         return Optional.ofNullable(activeMatches.get(uuid));
     }
 
-    public void addActiveMatch(UUID uuid, ActiveMatchDto activeMatch) {
-        activeMatches.put(uuid, activeMatch);
+    public void addActiveMatch(ActiveMatch activeMatch) {
+        activeMatches.put(activeMatch.getUuid(), activeMatch);
     }
 
     public void deleteActiveMatch(UUID uuid) {

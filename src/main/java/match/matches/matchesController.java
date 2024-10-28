@@ -40,11 +40,9 @@ public class matchesController extends HttpServlet {
             req.getRequestDispatcher(JspPathHelper.getPath("matchesPage")).forward(req, resp);
 
         } catch (RespException respException) {
-            req.setAttribute("respException", respException);
-            req.getRequestDispatcher(req.getRequestURI()).forward(req, resp);
+            handleException(req, resp, respException);
         } catch (Throwable e) {
-            req.setAttribute("respException", new RespException("500", "Неизвестная ошибка"));
-            req.getRequestDispatcher(req.getRequestURI()).forward(req, resp);
+            handleException(req, resp, new RespException("500", "Неизвестная ошибка"));
         }
     }
 
@@ -63,6 +61,11 @@ public class matchesController extends HttpServlet {
                 throw new RespException("400", "Указанный номер страницы меньше 1.");
         }
         return pageNumber;
+    }
+
+    private void handleException(HttpServletRequest req, HttpServletResponse resp, RespException respException) throws ServletException, IOException {
+        req.setAttribute("respException", respException);
+        req.getRequestDispatcher(JspPathHelper.getPath("matchesPage")).forward(req, resp);
     }
 
 }

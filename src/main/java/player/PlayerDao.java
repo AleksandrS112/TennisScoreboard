@@ -2,6 +2,7 @@ package player;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import util.HibernateUtil;

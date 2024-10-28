@@ -18,4 +18,8 @@ public class PlayerEntity {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
+    public PlayerEntity(String name) {
+        this.name = name;
+    }
+
 }

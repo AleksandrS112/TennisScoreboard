@@ -1,5 +1,6 @@
 package match.newMatch;
 
+import match.activeMatch.ActiveMatch;
 import match.activeMatch.OngoingMatchesService;
 import player.PlayerDto;
 import jakarta.servlet.ServletException;
@@ -15,13 +16,13 @@ import java.io.IOException;
 @WebServlet("/new-match")
 public class newMatchController extends HttpServlet {
     private OngoingMatchesService ongoingMatchesService;
-    private NewMatchDtoValidator newMatchDtoValidator;
+    private NewMatchValidator newMatchDtoValidator;
 
     @Override
     public void init() throws ServletException {
         super.init();
         ongoingMatchesService = OngoingMatchesService.getInstance();
-        newMatchDtoValidator = NewMatchDtoValidator.getInstance();
+        newMatchDtoValidator = NewMatchValidator.getInstance();
     }
 
     @Override
@@ -31,15 +32,15 @@ public class newMatchController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        NewMatchDto newMatchDto = new NewMatchDto(new PlayerDto(req.getParameter("player1_name")),
+        NewMatch newMatchDto = new NewMatch(new PlayerDto(req.getParameter("player1_name")),
                 new PlayerDto(req.getParameter("player2_name")));
         ValidationResult validationResult = newMatchDtoValidator.isValid(newMatchDto);
         if(!validationResult.isValid()) {
             req.setAttribute("validationResult", validationResult);
             req.getRequestDispatcher(JspPathHelper.getPath("newMatchPage")).forward(req, resp);
         }
-     //   ongoingMatchesService.addActiveMatch(newActiveMatch.getUuid(), newActiveMatch);
-   //     resp.sendRedirect(req.getContextPath() + "/match-score?uuid=" + newActiveMatch.getUuid().toString());
-
+        ActiveMatch activeMatch = new ActiveMatch(newMatchDto);
+        ongoingMatchesService.addActiveMatch(activeMatch);
+        resp.sendRedirect(req.getContextPath() + "/match-score?uuid=" + activeMatch.getUuid());
         }
     }

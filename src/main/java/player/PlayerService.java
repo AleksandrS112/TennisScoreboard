@@ -2,6 +2,7 @@ package player;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.HibernateException;
 
 import java.util.Optional;
 
@@ -17,17 +18,18 @@ public class PlayerService {
     }
 
     public PlayerDto buildPlayerDto(PlayerEntity playerEntity) {
-        return PlayerDto.builder()
-                .name(playerEntity.getName())
-                .build();
+        return new PlayerDto(playerEntity.getName());
     }
 
-    public Optional<PlayerDto> findByID(int id) {
-        Optional<PlayerEntity> playerEntity = playerDao.findById(id);
-        if (playerEntity.isEmpty())
-            return Optional.empty();
-        else
-            return Optional.of(buildPlayerDto(playerEntity.get()));
+    public PlayerEntity getOrSave(PlayerDto player) {
+        PlayerEntity playerEntity = new PlayerEntity(player.getName());
+        try {
+            playerDao.save(playerEntity);
+            return playerEntity;
+        } catch (HibernateException he) {
+            playerDao.findByName(player.getName());
+            return playerEntity;
+        }
     }
 
 }

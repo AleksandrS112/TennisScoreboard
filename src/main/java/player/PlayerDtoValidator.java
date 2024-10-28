@@ -21,7 +21,7 @@ public class PlayerDtoValidator implements Validator<PlayerDto> {
     public ValidationResult isValid(PlayerDto playerDto) {
         ValidationResult validationResult = new ValidationResult();
         if (playerDto.getName().isBlank()) {
-            validationResult.add(Error.of("400", "Отсутствует имя игрока."));
+            validationResult.add(Error.of("404", "Отсутствует имя игрока."));
             return validationResult;
         }
         if (playerDto.getName().length() > MAX_LENGTH_NAME)
