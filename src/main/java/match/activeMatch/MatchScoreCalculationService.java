@@ -3,11 +3,13 @@ package match.activeMatch;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.stream.Stream;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MatchScoreCalculationService {
 
     private static final int MINIMUM_REQUIRED_POINTS = 7;
-    private static final int MINIMUM_POINT_DIFFERENCE_REQUIRED = 2;
+    private static final int MINIMUM_REQUIRED_DIFFERENCE_POINTS = 2;
     private static final int SIX_POINTS = 6;
     private static final int GAMES_FOR_WINING_THE_SET = 7;
     private static final int GAME_RESET_VALUE = 0;
@@ -28,7 +30,7 @@ public class MatchScoreCalculationService {
         if (!tieBreak) {
             increaseValuePoints(winnerScore, loseScore);
         } else if (tieBreak) {
-            addOnePoint(winnerScore, loseScore);
+            increaseByOnePoint(winnerScore, loseScore);
         }
     }
 
@@ -55,15 +57,22 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private void addOnePoint(PlayerScore winnerScore, PlayerScore loseScore) {
-        int winnerPoints = Integer.parseInt(winnerScore.getPoints()) + 1;
-        winnerScore.setPoints(String.valueOf(winnerPoints));
-        int losePoints = Integer.parseInt(loseScore.getPoints());
-        boolean requiredPointDifference = winnerPoints - losePoints >= MINIMUM_POINT_DIFFERENCE_REQUIRED;
-        boolean gameWinCondition = (winnerPoints >= MINIMUM_REQUIRED_POINTS) && requiredPointDifference;
-        if (gameWinCondition) {
+    private void increaseByOnePoint(PlayerScore winnerScore, PlayerScore loseScore) {
+        winnerScore.setPoints(Stream.of(winnerScore.getPoints())
+                .map(Integer::parseInt)
+                .map(p -> p + 1)
+                .map(String::valueOf)
+                .findFirst().get()
+        );
+        int winnerPoints = Integer.parseInt(winnerScore.getPoints());
+        int loserPoints = Integer.parseInt(loseScore.getPoints());
+        if(tieBreakWon(winnerPoints, loserPoints))
             winGame(winnerScore, loseScore);
-        }
+    }
+
+    private boolean tieBreakWon (int winnerPoints, int loserPoints) {
+        boolean requiredPointDifference = winnerPoints - loserPoints >= MINIMUM_REQUIRED_DIFFERENCE_POINTS;
+        return winnerPoints >= MINIMUM_REQUIRED_POINTS && requiredPointDifference;
     }
 
     private void winGame(PlayerScore winnerScore, PlayerScore loseScore) {
