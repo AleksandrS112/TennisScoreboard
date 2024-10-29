@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import player.PlayerService;
 import util.JspPathHelper;
 
 import java.io.IOException;
@@ -50,7 +49,7 @@ public class MatchScoreController extends HttpServlet {
             activeMatch = ongoingMatchesService.getActiveMatch(uuid)
                     .orElseThrow(() -> new RespException("400", "Матча с таким uuid не существует."));
             PlayerNumber playerNumber = validationPlayerNumber(req.getParameter("winningPointPlayerNumber"));
-            matchScoreCalculationService.addPoint(activeMatch, playerNumber);
+            matchScoreCalculationService.winPoint(activeMatch, playerNumber);
             MatchStatus matchStatus = finishedMatchesPersistenceService.getStatus(activeMatch);
             if(matchStatus == MatchStatus.COMPLETED) {
                 resp.sendRedirect(req.getContextPath() + "/matches?page=1&&filter_by_player_name="

@@ -42,7 +42,7 @@ public enum Points {
         return values()[ordinal - 1];
     }
 
-    public static Points resetPoints() {
+    public static Points resetPoint() {
         return values()[0];
     }
 

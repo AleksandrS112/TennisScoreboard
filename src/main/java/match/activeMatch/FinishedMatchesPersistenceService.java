@@ -25,13 +25,18 @@ public class FinishedMatchesPersistenceService {
         int setPlayer1 = activeMatch.getPlayer1Score().getSet();
         int setPlayer2 = activeMatch.getPlayer2Score().getSet();
         if (setPlayer1 == WINNING_SCORE_SET || setPlayer2 == WINNING_SCORE_SET) {
-            PlayerEntity player1Entity = playerService.getOrSave(activeMatch.getPlayer1Score().getPlayer());
-            PlayerEntity player2Entity = playerService.getOrSave(activeMatch.getPlayer2Score().getPlayer());
-            PlayerEntity winner = setPlayer1 == WINNING_SCORE_SET ? player1Entity : player2Entity;
-            matchDao.save(new MatchEntity(player1Entity, player2Entity, winner));
-            ongoingMatchesService.deleteActiveMatch(activeMatch.getUuid());
+            save(activeMatch);
             return MatchStatus.COMPLETED;
         } else
             return MatchStatus.ACTIVE;
+    }
+
+    private void save(ActiveMatch activeMatch) {
+        PlayerEntity player1Entity = playerService.getOrSave(activeMatch.getPlayer1Score().getPlayer());
+        PlayerEntity player2Entity = playerService.getOrSave(activeMatch.getPlayer2Score().getPlayer());
+        PlayerEntity winner = activeMatch.getPlayer1Score().getSet() == WINNING_SCORE_SET ? player1Entity : player2Entity;
+        MatchEntity saveMatch = new MatchEntity(player1Entity, player2Entity, winner);
+        matchDao.save(saveMatch);
+        ongoingMatchesService.deleteActiveMatch(activeMatch.getUuid());
     }
 }
