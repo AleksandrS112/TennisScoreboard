@@ -1,11 +1,13 @@
 package match.activeMatch;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import player.PlayerDto;
 
+@EqualsAndHashCode
+@ToString
 @Getter @Setter
 public class PlayerScore {
+
     private PlayerDto player;
     private String points;
     private int game;
@@ -13,9 +15,10 @@ public class PlayerScore {
 
     public PlayerScore(PlayerDto player) {
         this.player = player;
-        points = "0";
+        this.points = Points.ZERO.value();
+        this.game = 0;
+        this.set = 0;
     }
-
 
 }
 

@@ -69,7 +69,7 @@ public class MatchScoreController extends HttpServlet {
     private PlayerNumber validationPlayerNumber(String playerNumberParam) throws RespException {
         try {
             if (playerNumberParam == null || playerNumberParam.isBlank())
-                throw new RespException("404", "Не указан норме игрока выйгравшего очко");
+                throw new RespException("400", "Не указан номер игрока выйгравшего очко");
             int playerNumber = Integer.parseInt(playerNumberParam);
             if(playerNumber == 1)
                 return PlayerNumber.ONE;
@@ -84,7 +84,7 @@ public class MatchScoreController extends HttpServlet {
     private UUID validationUuid(String uuidParam) throws RespException {
         try {
             if(uuidParam == null || uuidParam.isBlank())
-                throw new RespException("404", "Отсутствует UUID.");
+                throw new RespException("400", "Отсутствует UUID.");
             return UUID.fromString(uuidParam);
         } catch (IllegalArgumentException e) {
             throw new RespException("400", "Указан невалидный UUID.");

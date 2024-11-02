@@ -1,7 +1,10 @@
 package match;
 
+import exceptions.RespException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import player.PlayerDao;
 import player.PlayerEntity;
 import org.hibernate.Hibernate;
@@ -27,10 +30,21 @@ public class MatchDao {
 
     public void save(MatchEntity match) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.persist(match);
-        session.getTransaction().commit();
-        session.close();
+        try {
+            Transaction tx = session.beginTransaction();
+            session.persist(match);
+            tx.commit();
+        } catch (ConstraintViolationException he) {
+            session.getTransaction().rollback();
+            if (he.getMessage().contains("players_differ")) {
+                throw new RespException("400", "Игрока №1 и Игрока №2 совпадают.");
+            } else if (he.getMessage().contains("one_of_the_players_won")) {
+                throw new RespException("400", "Победителем должен быть игрок №1 или №2.");
+            }
+            throw new RespException("500", "Неизвестная ошибка.");
+        } finally {
+            session.close();
+        }
     }
 
 
@@ -60,6 +74,7 @@ public class MatchDao {
     public List<MatchEntity> getMatches(int pageNumber, int pageSize) {
         Session session = sessionFactory.openSession();
         List<MatchEntity> matches = session.createQuery("from MatchEntity", MatchEntity.class)
+                .setReadOnly(true)
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
@@ -76,6 +91,7 @@ public class MatchDao {
                 """;
         List<MatchEntity> matches = session.createQuery(hql, MatchEntity.class)
                 .setParameter("playerId", player.getId())
+                .setReadOnly(true)
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();

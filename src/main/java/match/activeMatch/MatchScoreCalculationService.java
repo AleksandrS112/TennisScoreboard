@@ -77,10 +77,11 @@ public class MatchScoreCalculationService {
 
     private void winGame(PlayerScore winnerScore, PlayerScore loseScore) {
         winnerScore.setGame(winnerScore.getGame() + 1);
-        if (winnerScore.getGame() == GAMES_FOR_WINING_THE_SET)
-            winSet(winnerScore, loseScore);
         winnerScore.setPoints(Points.resetPoint().value());
         loseScore.setPoints(Points.resetPoint().value());
+        if (winnerScore.getGame() == GAMES_FOR_WINING_THE_SET) {
+            winSet(winnerScore, loseScore);
+        }
     }
 
     private void winSet(PlayerScore winnerPointScore, PlayerScore losePointScore) {
