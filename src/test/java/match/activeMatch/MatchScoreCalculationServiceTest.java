@@ -2,11 +2,12 @@ package match.activeMatch;
 
 
 import match.newMatch.NewMatch;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import player.PlayerDto;
+
+import static match.activeMatch.Points.*;
 
 public class MatchScoreCalculationServiceTest {
 
@@ -33,36 +34,38 @@ public class MatchScoreCalculationServiceTest {
         // ________|Set|Game|Points|
         // Player1 | 0 |  0 |  15  | ☑
         // Player2 | 0 |  0 |  0   |
-        Assertions.assertEquals(player1Score.getPoints(), Points.FIFTEEN.value());
+        Assertions.assertEquals(player1Score.getPoints(), FIFTEEN.value());
 
         mscs.winPoint(activeMatch, PlayerNumber.ONE);
         // ________|Set|Game|Points|
         // Player1 | 0 |  0 |  30  | ☑
         // Player2 | 0 |  0 |  0   |
-        Assertions.assertEquals(player1Score.getPoints(), Points.THIRTY.value());
+        Assertions.assertEquals(player1Score.getPoints(), THIRTY.value());
 
         mscs.winPoint(activeMatch, PlayerNumber.ONE);
         // ________|Set|Game|Points|
         // Player1 | 0 |  0 |  40  | ☑
         // Player2 | 0 |  0 |  0   |
-        Assertions.assertEquals(player1Score.getPoints(), Points.FOURTY.value());
+        Assertions.assertEquals(player1Score.getPoints(), FOURTY.value());
 
-        mscs.winPoint(activeMatch, PlayerNumber.TWO);
+        for (int i = 0; i < 2; i++) {
+            mscs.winPoint(activeMatch, PlayerNumber.TWO);
+        }
         // ________|Set|Game|Points|
         // Player1 | 0 |  0 |  40  |
-        // Player2 | 0 |  0 |  15  | ☑
-        Assertions.assertEquals(player2Score.getPoints(), Points.FIFTEEN.value());
+        // Player2 | 0 |  0 |  30  | ☑
+        Assertions.assertEquals(player2Score.getPoints(), Points.THIRTY.value());
 
         mscs.winPoint(activeMatch, PlayerNumber.ONE);
         // ________|Set|Game|Points|
         // Player1 | 0 |  1 |  0   | ☑
         // Player2 | 0 |  0 |  0   |
-        Assertions.assertEquals(player1Score.getPoints(), Points.ZERO.value());
-        Assertions.assertEquals(player2Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player1Score.getPoints(), ZERO.value());
+        Assertions.assertEquals(player2Score.getPoints(), ZERO.value());
         Assertions.assertEquals(player1Score.getGame(), 1);
 
-        player1Score.setPoints(Points.FOURTY.value());
-        player2Score.setPoints(Points.FOURTY.value());
+        player1Score.setPoints(FOURTY.value());
+        player2Score.setPoints(FOURTY.value());
         // ________|Set|Game|Points|
         // Player1 | 0 |  1 |  40  |
         // Player2 | 0 |  0 |  40  |
@@ -71,39 +74,40 @@ public class MatchScoreCalculationServiceTest {
         // ________|Set|Game|Points|
         // Player1 | 0 |  1 |  AD  | ☑
         // Player2 | 0 |  0 |  40  |
-        Assertions.assertEquals(player1Score.getPoints(), Points.ADVANTAGE.value());
-        Assertions.assertEquals(player2Score.getPoints(), Points.FOURTY.value());
+        Assertions.assertEquals(player1Score.getPoints(), ADVANTAGE.value());
+        Assertions.assertEquals(player2Score.getPoints(), FOURTY.value());
         Assertions.assertEquals(player1Score.getGame(), 1);
 
         mscs.winPoint(activeMatch, PlayerNumber.TWO);
         // ________|Set|Game|Points|
         // Player1 | 0 |  1 |  40  |
         // Player2 | 0 |  0 |  40  | ☑
-        Assertions.assertEquals(player1Score.getPoints(), Points.FOURTY.value());
-        Assertions.assertEquals(player2Score.getPoints(), Points.FOURTY.value());
         Assertions.assertEquals(player1Score.getGame(), 1);
+        Assertions.assertEquals(player1Score.getPoints(), FOURTY.value());
+        Assertions.assertEquals(player2Score.getGame(), 0);
+        Assertions.assertEquals(player2Score.getPoints(), FOURTY.value());
 
         mscs.winPoint(activeMatch, PlayerNumber.TWO);
         // ________|Set|Game|Points|
         // Player1 | 0 |  1 |  40  |
         // Player2 | 0 |  0 |  AD  | ☑
-        Assertions.assertEquals(player1Score.getPoints(), Points.FOURTY.value());
-        Assertions.assertEquals(player2Score.getPoints(), Points.ADVANTAGE.value());
+        Assertions.assertEquals(player1Score.getPoints(), FOURTY.value());
         Assertions.assertEquals(player2Score.getGame(), 0);
+        Assertions.assertEquals(player2Score.getPoints(), ADVANTAGE.value());
 
         mscs.winPoint(activeMatch, PlayerNumber.TWO);
         // ________|Set|Game|Points|
         // Player1 | 0 |  1 |  0   |
         // Player2 | 0 |  1 |  0   | ☑
-        Assertions.assertEquals(player1Score.getPoints(), Points.ZERO.value());
-        Assertions.assertEquals(player2Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player1Score.getPoints(), ZERO.value());
+        Assertions.assertEquals(player2Score.getPoints(), ZERO.value());
         Assertions.assertEquals(player1Score.getGame(), 1);
         Assertions.assertEquals(player2Score.getGame(), 1);
 
         player1Score.setGame(6);
-        player1Score.setPoints(Points.FOURTY.value());
-        player2Score.setPoints(Points.FIFTEEN.value());
+        player1Score.setPoints(FOURTY.value());
         player2Score.setGame(5);
+        player2Score.setPoints(FIFTEEN.value());
         // ________|Set|Game|Points|
         // Player1 | 0 |  6 |  40  |
         // Player2 | 0 |  5 |  15   |
@@ -114,13 +118,13 @@ public class MatchScoreCalculationServiceTest {
         // Player2 | 0 |  0 |  0   |
         Assertions.assertEquals(player1Score.getSet(), 1);
         Assertions.assertEquals(player1Score.getGame(), 0);
-        Assertions.assertEquals(player1Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player1Score.getPoints(), ZERO.value());
         Assertions.assertEquals(player2Score.getGame(), 0);
-        Assertions.assertEquals(player2Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player2Score.getPoints(), ZERO.value());
 
         player1Score.setGame(6);
         player2Score.setGame(5);
-        player2Score.setPoints(Points.FOURTY.value());
+        player2Score.setPoints(FOURTY.value());
         // ________|Set|Game|Points|
         // Player1 | 1 |  6 |  0   |
         // Player2 | 0 |  5 |  40  |
@@ -130,8 +134,8 @@ public class MatchScoreCalculationServiceTest {
         // Player1 | 1 |  6 |  0   |
         // Player2 | 0 |  6 |  0   | ☑
         Assertions.assertEquals(player2Score.getGame(), 6);
-        Assertions.assertEquals(player1Score.getPoints(), "0");
         Assertions.assertEquals(player2Score.getPoints(), "0");
+        Assertions.assertEquals(player1Score.getPoints(), "0");
 
         for (int i = 0; i < 6; i++) {
             mscs.winPoint(activeMatch, PlayerNumber.TWO);
@@ -150,9 +154,9 @@ public class MatchScoreCalculationServiceTest {
         // Player2 | 1 |  0 |  0   | ☑
         Assertions.assertEquals(player2Score.getSet(), 1);
         Assertions.assertEquals(player2Score.getGame(), 0);
-        Assertions.assertEquals(player2Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player2Score.getPoints(), ZERO.value());
         Assertions.assertEquals(player1Score.getGame(), 0);
-        Assertions.assertEquals(player1Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player1Score.getPoints(), ZERO.value());
 
         player1Score.setGame(6);
         player2Score.setGame(6);
@@ -180,10 +184,10 @@ public class MatchScoreCalculationServiceTest {
         // Player2 | 2 |  0 |  0   | ☑
         Assertions.assertEquals(player1Score.getSet(), 1);
         Assertions.assertEquals(player1Score.getGame(), 0);
-        Assertions.assertEquals(player1Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player1Score.getPoints(), ZERO.value());
         Assertions.assertEquals(player2Score.getSet(), 2);
         Assertions.assertEquals(player2Score.getGame(), 0);
-        Assertions.assertEquals(player2Score.getPoints(), Points.ZERO.value());
+        Assertions.assertEquals(player2Score.getPoints(), ZERO.value());
 
     }
 }
