@@ -5,7 +5,7 @@ import player.PlayerDto;
 
 @EqualsAndHashCode
 @ToString
-@Getter @Setter
+@Getter @Setter(AccessLevel.PACKAGE)
 public class PlayerScore {
 
     private PlayerDto player;

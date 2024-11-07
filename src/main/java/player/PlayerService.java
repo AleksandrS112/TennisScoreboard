@@ -1,5 +1,6 @@
 package player;
 
+import exceptions.RespException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.HibernateException;
@@ -25,11 +26,12 @@ public class PlayerService {
         PlayerEntity playerEntity = new PlayerEntity(player.getName());
         try {
             playerDao.save(playerEntity);
-            return playerEntity;
-        } catch (HibernateException he) {
-            playerDao.findByName(player.getName());
-            return playerEntity;
+        } catch (RespException re) {
+            if (re.getMessage().contains("Игрок с таким именем уже существует.")) {
+                playerEntity = playerDao.findByName(player.getName()).get();
+            }
         }
+        return playerEntity;
     }
 
 }

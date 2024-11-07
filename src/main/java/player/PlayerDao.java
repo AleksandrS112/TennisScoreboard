@@ -27,22 +27,21 @@ public class PlayerDao {
             Transaction tx = session.beginTransaction();
             session.persist(player);
             tx.commit();
-        } catch (PropertyValueException he) {
+        } catch (HibernateException he) {
             session.getTransaction().rollback();
-            if (he.getPropertyName().equals("name")) {
-                throw new RespException("400", "Отсутствует имя игрока.");
-            }
-        } catch (ConstraintViolationException he) {
-            session.getTransaction().rollback();
-            if (he.getMessage().contains("players_name_key")) {
-                throw new RespException("409", "Игрок с именем " + player.getName() + " уже существует.");
-            } else if (he.getMessage().contains("name_is_not_empty")) {
-                throw new RespException("400", "Отсутствует имя игрока.");
-            }
-        } catch (DataException he) {
-            session.getTransaction().rollback();
-            if (he.getMessage().contains("varying(" +MAX_LENGTH_NAME +")"))
-                throw new RespException("400", "Имя игрока превышает " + MAX_LENGTH_NAME + " символов.");
+            if (he instanceof PropertyValueException) {
+                if (((PropertyValueException) he).getPropertyName().equals("name"))
+                    throw new RespException("400", "Отсутствует имя игрока.");
+            } else if (he instanceof ConstraintViolationException) {
+                if (he.getMessage().contains("players_name_key")) {
+                    throw new RespException("409", "Игрок с таким именем уже существует.");
+                } else if (he.getMessage().contains("name_is_not_empty")) {
+                    throw new RespException("400", "Отсутствует имя игрока.");
+                }
+            } else if (he instanceof DataException) {
+                if (he.getMessage().contains("varying(" +MAX_LENGTH_NAME +")"))
+                    throw new RespException("400", "Имя игрока превышает " + MAX_LENGTH_NAME + " символов.");
+            } else throw new RespException("500", "Неизвестная ошибка");
         } finally {
             session.close();
         }

@@ -9,7 +9,7 @@ import player.PlayerService;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FinishedMatchesPersistenceService {
-    private static final int WINNING_SCORE_SET = 3;
+    private static final int WINNING_SCORE_SET = 2;
 
     private static final FinishedMatchesPersistenceService INSTANCE = new FinishedMatchesPersistenceService();
 
@@ -25,13 +25,12 @@ public class FinishedMatchesPersistenceService {
         int setPlayer1 = activeMatch.getPlayer1Score().getSet();
         int setPlayer2 = activeMatch.getPlayer2Score().getSet();
         if (setPlayer1 == WINNING_SCORE_SET || setPlayer2 == WINNING_SCORE_SET) {
-            save(activeMatch);
             return MatchStatus.COMPLETED;
         } else
             return MatchStatus.ACTIVE;
     }
 
-    private void save(ActiveMatch activeMatch) {
+    public void save(ActiveMatch activeMatch) {
         PlayerEntity player1Entity = playerService.getOrSave(activeMatch.getPlayer1Score().getPlayer());
         PlayerEntity player2Entity = playerService.getOrSave(activeMatch.getPlayer2Score().getPlayer());
         PlayerEntity winner = activeMatch.getPlayer1Score().getSet() == WINNING_SCORE_SET ? player1Entity : player2Entity;

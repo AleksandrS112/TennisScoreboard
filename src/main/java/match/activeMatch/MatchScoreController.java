@@ -52,6 +52,7 @@ public class MatchScoreController extends HttpServlet {
             matchScoreCalculationService.winPoint(activeMatch, playerNumber);
             MatchStatus matchStatus = finishedMatchesPersistenceService.getStatus(activeMatch);
             if(matchStatus == MatchStatus.COMPLETED) {
+                finishedMatchesPersistenceService.save(activeMatch);
                 resp.sendRedirect(req.getContextPath() + "/matches?page=1&&filter_by_player_name="
                         + activeMatch.getPlayer1Score().getPlayer().getName());
             } else if (matchStatus == MatchStatus.ACTIVE) {

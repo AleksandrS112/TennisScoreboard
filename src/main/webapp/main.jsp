@@ -5,18 +5,18 @@
   <title>Главная</title>
 </head>
 <body>
-<div style="justify-content: center">
-  <h1>Проект теннисное табло</h1>
+<div style= "display: flex; justify-content: center">
+  <h1 style="display: inline-block">Проект теннисное табло</h1>
 </div>
 
-<div style="justify-content: center">
-  <a href="${pageContext.request.contextPath}/new-match">
+<div style="display: flex; justify-content: center">
+  <a href="${pageContext.request.contextPath}/new-match" style="display: inline-block">
     <button>Начать новый матч</button>
   </a>
 </div>
 
-<div>
-  <a href="${pageContext.request.contextPath}/matches">
+<div style="display: flex; justify-content: center">
+  <a href="${pageContext.request.contextPath}/matches" style="display: inline-block">
     <button>Завершённые матчи</button>
   </a>
 </div>
